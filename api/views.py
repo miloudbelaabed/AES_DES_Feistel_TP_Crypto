@@ -8,9 +8,9 @@ from .aes import AES
 # Create your views here.
 
 
-def handleAES(text, key):
+def handleAES(text, key, bloc_size):
 
-    return AES(text, key)
+    return AES(text, key, bloc_size)
 
 
 def handleDES(text, key):
@@ -54,9 +54,11 @@ def main(request):
                 response_data_success["data"] = res
                 return JsonResponse(response_data_success)
             elif x['algoId'] == 4:
+                size_ = int(x['bloc_size'])/8
 
-                res = handleAES(text=x['text'], key=x['key'])
-                print(res)
+                res = handleAES(
+                    text=x['text'], key=x['key'], bloc_size=size_)
+
                 response_data_success["response"] = "success"
                 response_data_success["data"] = res
                 return JsonResponse(response_data_success)

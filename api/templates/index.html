@@ -31,6 +31,7 @@
             >Choisir L'exercice:</label
           >
           <select
+            name="selected_input"
             class="form-control"
             id="algo"
             aria-label="Default select example"
@@ -42,8 +43,27 @@
             <option value="4">exercice4 (AES)</option>
           </select>
         </div>
-      
-        <form>
+
+        <form id="cryppto_form">
+          <div class="row justify-content-center">
+            <div
+              style="display: none"
+              id="bloc_size_controle"
+              class="col-6 align-self-center mt-5"
+            >
+              <label id="blocsize_label" class="form-label"> Bloc Size:</label>
+              <select
+                name="selected_input"
+                class="form-control"
+                id="bloc_size"
+                aria-label="Default select example"
+              >
+                <option selected value="128">128bit</option>
+                <option value="192">192bit</option>
+                <option value="256">256bit</option>
+              </select>
+            </div>
+          </div>
           <div class="row justify-content-center">
             <div
               id="text_controle"
@@ -54,9 +74,11 @@
                 >Text</label
               >
               <input
-                required
+                name="input_text"
                 type="text"
                 class="form-control"
+                minlength="16"
+                maxlength="16"
                 id="text_clear"
                 placeholder="entre a text pourle chiffré"
               />
@@ -66,11 +88,13 @@
             <div class="col-6 align-self-center">
               <div>
                 <div id="key_controle" style="display: none">
-                  <label for="key" class="form-label">Key</label>
+                  <label class="form-label">Key</label>
                   <input
-                    required
+                    name="key_crypto"
                     type="text"
                     class="form-control"
+                    minlength="16"
+                    maxlength="16"
                     id="key"
                     placeholder="entre la clé (16 letters)"
                   />
@@ -82,6 +106,7 @@
                     readonly
                     id="result"
                     rows="3"
+                    name="result"
                   ></textarea>
                 </div>
                 <div
@@ -108,17 +133,39 @@
       const keyInput = document.querySelector("#key");
       const text_clearInput = document.querySelector("#text_clear");
       const text_controleElement = document.querySelector("#text_controle");
+      const bloc_size_controleElement = document.querySelector(
+        "#bloc_size_controle"
+      );
       const key_controleElement = document.querySelector("#key_controle");
       const result_controleElement = document.querySelector("#result_controle");
       const btn_controleElement = document.querySelector("#btn_controle");
+      const bloc_size_selecter = document.getElementById("bloc_size");
+      bloc_size_selecter.onchange = function (ev) {
+        let selected_bloc = this.value;
+        if (["128", "192", "256"].indexOf(`${selected_bloc}`) === -1) {
+          bloc_size_selecter.value = 128;
+          return;
+        }
+        text_clearInput.setAttribute("maxlength", selected_bloc / 8);
+        text_clearInput.setAttribute("minlength", selected_bloc / 8);
+        keyInput.setAttribute("maxlength", selected_bloc / 8);
+        keyInput.setAttribute("minlength", selected_bloc / 8);
+      };
       let idAlgo = null;
       let data_req = {};
       // functions
       console.log(selectNode);
       const algoSelected = () => {
+        keyInput.value = "";
+        text_clearInput.value = "";
+        text_clearInput.setAttribute("maxlength", 8);
+        text_clearInput.setAttribute("minlength", 8);
+        keyInput.setAttribute("maxlength", 8);
+        keyInput.setAttribute("minlength", 8);
         idAlgo = parseInt(selectNode.value);
+        keyInput.required = false;
         switch (idAlgo) {
-            case 0:
+          case 0:
             if (!text_controleElement.attributes.style) {
               text_controleElement.setAttribute("style", "display:none");
             }
@@ -130,6 +177,9 @@
             }
             if (!key_controleElement.attributes.style) {
               key_controleElement.setAttribute("style", "display:none");
+            }
+            if (!bloc_size_controleElement.attributes.style) {
+              bloc_size_controleElement.setAttribute("style", "display:none");
             }
             break;
           case 1:
@@ -144,6 +194,9 @@
             }
             if (!key_controleElement.attributes.style) {
               key_controleElement.setAttribute("style", "display:none");
+            }
+            if (!bloc_size_controleElement.attributes.style) {
+              bloc_size_controleElement.setAttribute("style", "display:none");
             }
             console.log(key_controleElement.attributes.style.value);
             break;
@@ -160,29 +213,44 @@
             if (!key_controleElement.attributes.style) {
               key_controleElement.setAttribute("style", "display:none");
             }
+            if (!bloc_size_controleElement.attributes.style) {
+              bloc_size_controleElement.setAttribute("style", "display:none");
+            }
             break;
           case 3:
+            keyInput.required = true;
             text_controleElement.removeAttribute("style", "display:none");
             result_controleElement.removeAttribute("style", "display:none");
             btn_controleElement.removeAttribute("style", "display:none");
             key_controleElement.removeAttribute("style", "display:none");
+            if (!bloc_size_controleElement.attributes.style) {
+              bloc_size_controleElement.setAttribute("style", "display:none");
+            }
             break;
           case 4:
+            keyInput.required = true;
+            selected_bloc = bloc_size_selecter.value;
+            text_clearInput.setAttribute("maxlength", selected_bloc / 8);
+            text_clearInput.setAttribute("minlength", selected_bloc / 8);
+            keyInput.setAttribute("maxlength", selected_bloc / 8);
+            keyInput.setAttribute("minlength", selected_bloc / 8);
             text_controleElement.removeAttribute("style", "display:none");
             result_controleElement.removeAttribute("style", "display:none");
             btn_controleElement.removeAttribute("style", "display:none");
             key_controleElement.removeAttribute("style", "display:none");
+            bloc_size_controleElement.removeAttribute("style", "display:none");
             break;
           default:
             console.log("out of range !");
             break;
         }
       };
-      const handleSumbmit = (e) => {
-        console.log(e);
-        console.log(idAlgo);
 
-        e.preventDefault();
+      document.getElementById("cryppto_form").onsubmit = function (ev) {
+        ev.preventDefault();
+        handleSumbmit();
+      };
+      const handleSumbmit = () => {
         switch (idAlgo) {
           case 1:
             data_req = {
@@ -190,7 +258,7 @@
               algoId: 1,
               key: null,
             };
-            console.log(data_req)
+            console.log(data_req);
             break;
           case 2:
             data_req = {
@@ -211,10 +279,11 @@
               text: text_clearInput.value,
               algoId: 4,
               key: keyInput.value,
+              bloc_size: bloc_size_selecter.value,
             };
             break;
         }
-        
+
         fetch("http://localhost:8000/api/", {
           headers: {
             Accept: "application/json",
@@ -224,7 +293,7 @@
           body: JSON.stringify(data_req),
         })
           .then((resp) => {
-            console.log(data_req)
+            console.log(data_req);
             return resp.json();
           })
           .then((res) => {
@@ -233,7 +302,7 @@
           });
       };
       //event listners
-      submitedBtn.addEventListener("click", handleSumbmit);
+      /* submitedBtn.addEventListener("click", handleSumbmit);*/
       selectNode.addEventListener("change", algoSelected);
     </script>
   </body>

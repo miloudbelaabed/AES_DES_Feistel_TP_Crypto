@@ -5,7 +5,7 @@ class Rijndael(object):
     @classmethod
     def create(cls):
 
-        if hasattr(cls, "RIJNDAEL_CREATED By Oucif abdelakarim & Belaabed Miloud"):
+        if hasattr(cls, "RIJNDAEL_CREATED By Oucif Abdelakarim & Belaabed Miloud"):
             return
 
         # [keysize][block_size]
@@ -304,7 +304,7 @@ class Rijndael(object):
 # print(ciphertext)
 
 
-def AES(text, key):
-    r = Rijndael(key, block_size=32)
+def AES(text, key,bloc_size):
+    r = Rijndael(key,bloc_size)
     ciphertext = r.encrypt(text)
     return ciphertext
