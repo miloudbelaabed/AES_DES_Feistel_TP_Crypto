@@ -22,7 +22,7 @@
     <div class="container">
       <header>
         <h1 style="text-align: center">
-          Cryptography by Oucif abdelkarim Belaabed Mildou Boudouha rabie
+          Cryptography by Oucif abdelkarim & Belaabed Miloud & Boudouha rabie
         </h1>
       </header>
       <div class="row justify-content-center">
@@ -35,48 +35,14 @@
             id="algo"
             aria-label="Default select example"
           >
-            <option selected value="1">exercice1</option>
+            <option selected value="0">Selectionner l'exerice</option>
+            <option value="1">exercice1</option>
             <option value="2">exercice2</option>
             <option value="3">exercice3 (DES)</option>
             <option value="4">exercice4 (AES)</option>
           </select>
         </div>
-        <div id="d1" style="display: none">
-          <h1>Feistel Algorithme</h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores,
-            obcaecati maxime explicabo repellat voluptas nisi non?
-            Exercitationem ab nulla ut debitis incidunt cupiditate cum at,
-            quaerat velit illo recusandae adipisci!
-          </p>
-        </div>
-        <div id="d2" style="display: none">
-          <h1>Feistel Algorithme</h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores,
-            obcaecati maxime explicabo repellat voluptas nisi non?
-            Exercitationem ab nulla ut debitis incidunt cupiditate cum at,
-            quaerat velit illo recusandae adipisci!
-          </p>
-        </div>
-        <div id="d3" style="display: none">
-          <h1>DES Algorithme</h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores,
-            obcaecati maxime explicabo repellat voluptas nisi non?
-            Exercitationem ab nulla ut debitis incidunt cupiditate cum at,
-            quaerat velit illo recusandae adipisci!
-          </p>
-        </div>
-        <div id="d4">
-          <h1>AES Algorithme</h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores,
-            obcaecati maxime explicabo repellat voluptas nisi non?
-            Exercitationem ab nulla ut debitis incidunt cupiditate cum at,
-            quaerat velit illo recusandae adipisci!
-          </p>
-        </div>
+      
         <form>
           <div class="row justify-content-center">
             <div
@@ -152,6 +118,20 @@
       const algoSelected = () => {
         idAlgo = parseInt(selectNode.value);
         switch (idAlgo) {
+            case 0:
+            if (!text_controleElement.attributes.style) {
+              text_controleElement.setAttribute("style", "display:none");
+            }
+            if (!result_controleElement.attributes.style) {
+              result_controleElement.setAttribute("style", "display:none");
+            }
+            if (!btn_controleElement.attributes.style) {
+              btn_controleElement.setAttribute("style", "display:none");
+            }
+            if (!key_controleElement.attributes.style) {
+              key_controleElement.setAttribute("style", "display:none");
+            }
+            break;
           case 1:
             if (text_controleElement.attributes.style) {
               text_controleElement.removeAttribute("style", "display:none");
