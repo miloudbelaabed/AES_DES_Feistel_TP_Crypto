@@ -26,7 +26,7 @@ SECRET_KEY = '1^n92@xd-vtg=td-hb2hfh5ips1^@e!1v!m2zru61nv1h1st1d'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['cryptotp.herokuapp.com']
 
 
 # Application definition
